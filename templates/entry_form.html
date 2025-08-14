@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="h4 mb-3">{{ 'Editar' if entry else 'Nuevo' }} registro</h1>
+<form method="post" class="row gy-3" style="max-width:720px">
+  <div class="col-md-4">
+    <label class="form-label">Fecha</label>
+    <input type="date" name="work_date" class="form-control" value="{{ today }}" required>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Paquetes</label>
+    <input type="number" min="0" name="packages" class="form-control" value="{{ entry.packages if entry else 0 }}" required>
+  </div>
+  <div class="col-12">
+    <label class="form-label">Notas</label>
+    <textarea name="notes" rows="3" class="form-control">{{ entry.notes if entry else '' }}</textarea>
+  </div>
+  <div class="col-12 d-flex gap-2">
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('home') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

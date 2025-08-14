@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="h4 mb-3">Generar factura</h1>
+<form method="post" class="row gy-2 align-items-end" style="max-width:860px">
+  <div class="col-md-4">
+    <label class="form-label">Usuario</label>
+    <select name="user_id" class="form-select" required>
+      <option value="">Selecciona…</option>
+      {% for u in users %}
+      <option value="{{ u.id }}" {% if selected_user_id and selected_user_id==u.id %}selected{% endif %}>{{ u.name }} ({{ u.email }})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Desde</label>
+    <input type="date" name="start" class="form-control" required>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Hasta</label>
+    <input type="date" name="end" class="form-control" required>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Van rent ($)</label>
+    <input type="number" step="0.01" name="van_rent" class="form-control" value="100">
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary">Calcular</button>
+  </div>
+</form>
+
+{% if result %}
+<hr class="my-4">
+<h2 class="h5">Resumen</h2>
+<ul>
+  <li>Paquetes: <strong>{{ result.calc.packages }}</strong></li>
+  <li>Base (paquetes × $/pkg): <strong>${{ '%.2f'|format(result.calc.base) }}</strong></li>
+  <li>Super ({{ '%.2f'|format(result.calc.super_rate*100) }}%): <strong>${{ '%.2f'|format(result.calc.super_amount) }}</strong></li>
+  <li>Subtotal: <strong>${{ '%.2f'|format(result.calc.subtotal) }}</strong></li>
+  <li>GST 10%: <strong>${{ '%.2f'|format(result.calc.gst) }}</strong></li>
+  <li>Total + GST: <strong>${{ '%.2f'|format(result.calc.subtotal + result.calc.gst) }}</strong></li>
+  <li>Van rent: <strong>-${{ '%.2f'|format(result.calc.van_rent) }}</strong></li>
+  <li class="mt-2">TOTAL FINAL: <strong>${{ '%.2f'|format(result.calc.total) }}</strong></li>
+</ul>
+<a class="btn btn-success" href="{{ url_for('invoice_pdf', user_id=result.user.id, start=result.start, end=result.end, van_rent=result.calc.van_rent) }}">Descargar PDF</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+  <div class="col-md-6">
+    <h1 class="h5 mb-3">Crear usuario</h1>
+    <form method="post" class="row gy-2">
+      <div class="col-md-6"><input name="name" class="form-control" placeholder="Nombre" required></div>
+      <div class="col-md-6"><input name="email" type="email" class="form-control" placeholder="Email" required></div>
+      <div class="col-md-6"><input name="password" type="text" class="form-control" placeholder="Contraseña" required></div>
+      <div class="col-md-3"><input name="price_per_pkg" type="number" step="0.01" class="form-control" placeholder="$ por paquete" required></div>
+      <div class="col-md-3"><input name="super_rate" type="number" step="0.001" class="form-control" placeholder="Super rate (ej 0.115)" required></div>
+      <div class="col-md-4">
+        <select name="role" class="form-select">
+          <option value="worker">Worker</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="col-12"><button class="btn btn-primary">Crear</button></div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <h1 class="h5 mb-3">Usuarios</h1>
+    <table class="table table-sm table-striped">
+      <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>$/pkg</th><th>Super</th></tr></thead>
+      <tbody>
+      {% for u in users %}
+        <tr><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ u.role }}</td><td>{{ '%.2f'|format(u.price_per_pkg) }}</td><td>{{ '%.2f%%'|format(u.super_rate*100) }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
