@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Mis registros</h1>
+  <a class="btn btn-primary" href="{{ url_for('entry_new') }}">+ Nuevo día</a>
+</div>
+<table class="table table-striped">
+  <thead><tr><th>Fecha</th><th>Paquetes</th><th>Notas</th><th>Comentario admin</th><th></th></tr></thead>
+  <tbody>
+  {% for e in items %}
+    <tr>
+      <td>{{ e.work_date }}</td>
+      <td>{{ e.packages }}</td>
+      <td>{{ e.notes or '—' }}</td>
+      <td>{{ e.admin_comment or '—' }}</td>
+      <td><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('entry_edit', entry_id=e.id) }}">Editar</a></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="5" class="text-center text-muted">Sin registros</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

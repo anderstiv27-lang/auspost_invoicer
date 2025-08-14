@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Admin - Últimos registros</h1>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-primary" href="{{ url_for('invoice') }}">📄 Facturar</a>
+    <a class="btn btn-primary" href="{{ url_for('admin_users') }}">👥 Usuarios</a>
+  </div>
+</div>
+<table class="table table-striped align-middle">
+  <thead><tr><th>Fecha</th><th>Usuario</th><th>Paquetes</th><th>Notas</th><th>Comentario admin</th><th></th></tr></thead>
+  <tbody>
+  {% for e in items %}
+    <tr>
+      <td>{{ e.work_date }}</td>
+      <td>{{ e.user.name }}</td>
+      <td>{{ e.packages }}</td>
+      <td>{{ e.notes or '—' }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_comment', entry_id=e.id) }}" class="d-flex gap-2">
+          <input name="admin_comment" class="form-control form-control-sm" value="{{ e.admin_comment or '' }}" placeholder="Escribe un comentario">
+          <button class="btn btn-sm btn-outline-secondary">Guardar</button>
+        </form>
+      </td>
+      <td><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('entry_edit', entry_id=e.id) }}">Editar</a></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6" class="text-center text-muted">Sin registros</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
